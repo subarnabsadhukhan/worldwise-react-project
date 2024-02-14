@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CitiesProvider } from "./contexts/CitiesContext";
 import PageNotFound from "./pages/PageNotFound";
 import Product from "./pages/Product";
@@ -17,7 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <CitiesProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route index element={<Homepage />} />
             <Route path="product" element={<Product />} />
@@ -39,7 +39,7 @@ function App() {
             </Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </CitiesProvider>
     </AuthProvider>
   );
