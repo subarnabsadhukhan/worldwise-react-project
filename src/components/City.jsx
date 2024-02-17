@@ -22,7 +22,7 @@ function City() {
   useEffect(() => {
     getCity(id);
     setIsLoadingSpinner(false);
-  }, [id]);
+  }, [getCity, id]);
   // const [searchParams, setSearchParams] = useSearchParams();
   // const lat = searchParams.get("lat");
   // const lng = searchParams.get("lng");

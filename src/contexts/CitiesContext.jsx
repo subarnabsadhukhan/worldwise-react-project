@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 
 const BASE_URL = `https://my-json-server.typicode.com/subarnabsadhukhan/worldwise-react-project`;
 
@@ -68,19 +68,22 @@ function CitiesProvider({ children }) {
     fetchCities();
   }, []);
 
-  async function getCity(id) {
-    if (id === currentCity.id) return;
-    try {
-      dispatch({ type: "LOADING", payload: true });
-      const response = await fetch(`${BASE_URL}/cities/${id}`);
-      const data = await response.json();
-      dispatch({ type: "GET_CITY", payload: data });
-    } catch (error) {
-      alert("There was an error loading the city...");
-    } finally {
-      dispatch({ type: "LOADING", payload: false });
-    }
-  }
+  const getCity = useCallback(
+    async function getCity(id) {
+      if (id === currentCity.id) return;
+      try {
+        dispatch({ type: "LOADING", payload: true });
+        const response = await fetch(`${BASE_URL}/cities/${id}`);
+        const data = await response.json();
+        dispatch({ type: "GET_CITY", payload: data });
+      } catch (error) {
+        alert("There was an error loading the city...");
+      } finally {
+        dispatch({ type: "LOADING", payload: false });
+      }
+    },
+    [currentCity.id]
+  );
   async function createCity(newCity) {
     try {
       dispatch({ type: "LOADING", payload: true });
