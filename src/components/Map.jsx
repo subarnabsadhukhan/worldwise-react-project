@@ -8,7 +8,7 @@ import {
   useMap,
   useMapEvent,
 } from "react-leaflet";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCities } from "../hooks/useCitiesContext";
 import { countryCodeToFlag } from "../helper";
 import { useGeolocation } from "../hooks/useGeoLocation";
@@ -16,6 +16,7 @@ import Button from "./Button";
 import { useUrlPosition } from "../hooks/useUrlPosition";
 
 function Map() {
+  const navigateRef = useRef();
   const navigate = useNavigate();
   const [mapLat, mapLng] = useUrlPosition();
   const { cities } = useCities();
@@ -25,6 +26,10 @@ function Map() {
     getPosition,
   } = useGeolocation();
 
+  useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
+
   const [mapPosition, setMapPosition] = useState([40, 0]);
   useEffect(() => {
     if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
@@ -33,7 +38,7 @@ function Map() {
   useEffect(() => {
     if (geoLocationPosition) {
       setMapPosition([geoLocationPosition.lat, geoLocationPosition.lng]);
-      navigate(
+      navigateRef.current(
         `form?lat=${geoLocationPosition.lat}&lng=${geoLocationPosition.lng}`
       );
     }
